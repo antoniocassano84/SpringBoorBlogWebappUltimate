@@ -1,6 +1,7 @@
 package net.javaguides.springboorblogwebapp.repository;
 
 import net.javaguides.springboorblogwebapp.entity.Post;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,17 @@ class PostRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        postRepository.saveAllAndFlush(List.of(Post.builder().title("test").content("test content").url("url test 1").build(),
+        postRepository.saveAllAndFlush(List.of(
+                Post.builder().title("test").content("test content").url("url test 1").build(),
                 Post.builder().title("test").content("test content").url("url test 2").build(),
-                Post.builder().title("test").content("test content").url("url test 3").build()));
+                Post.builder().title("test").content("test content").url("url test 3").build()
+                )
+        );
+    }
+
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAll();
     }
 
     @Test
