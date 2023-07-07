@@ -27,9 +27,15 @@ class PostControllerTest {
     }
 
     @Test
-    void itReturnsCorrectView() {
+    void postsReturnsCorrectView() {
         String postsView = postController.posts(model);
         verify(postService).findAllPosts();
-        assertThat(postsView).isEqualTo("/admin/posts");
+        assertThat(postsView).isEqualTo(PostController.ADMIN_POSTS);
+    }
+
+    @Test
+    void newPostReturnsCorrectView() {
+        String newPostView = postController.newPost(model);
+        assertThat(newPostView).isEqualTo(PostController.ADMIN_NEW_POST_VIEW);
     }
 }
