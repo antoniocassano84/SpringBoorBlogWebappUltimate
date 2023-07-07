@@ -36,6 +36,6 @@ class PostControllerTest {
     @Test
     void newPostReturnsCorrectView() {
         String newPostView = postController.newPost(model);
-        assertThat(newPostView).isEqualTo(PostController.ADMIN_NEW_POST_VIEW);
+        assertThat(newPostView).isEqualTo(PostController.ADMIN_NEW_POST);
     }
 }
