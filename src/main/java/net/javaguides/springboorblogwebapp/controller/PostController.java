@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PostController {
@@ -29,15 +26,21 @@ public class PostController {
 
     @GetMapping(ADMIN_POSTS)
     public String posts(Model model) {
-        return allPostsPaginated(1, model);
+        return allPostsPaginated(1,"title", "asc", model);
     }
 
     @GetMapping(ADMIN_POSTS_PAGE)
-    public String allPostsPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
-        Page<PostDto> page = postService.findPaginated(pageNo, 5);
+    public String allPostsPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                    @RequestParam("sortField") String sortField,
+                                    @RequestParam("sortDir") String sortDir,
+                                    Model model) {
+        Page<PostDto> page = postService.findPaginated(pageNo, 5, sortField, sortDir);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("posts", page.getContent());
         return ADMIN_POSTS;
     }

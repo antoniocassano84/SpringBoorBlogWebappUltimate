@@ -10,6 +10,6 @@ public interface PostService {
     List<PostDto> findAllPosts();
 
     void createPost(PostDto postDto);
-    Page<PostDto> findPaginated(int pageNo, int pageSize);
+    Page<PostDto> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
 
 }
