@@ -3,11 +3,13 @@ package net.javaguides.springboorblogwebapp.controller;
 import jakarta.validation.Valid;
 import net.javaguides.springboorblogwebapp.dto.PostDto;
 import net.javaguides.springboorblogwebapp.service.PostService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -15,6 +17,7 @@ public class PostController {
 
     public static final String ADMIN = "/admin";
     public static final String ADMIN_POSTS = ADMIN + "/posts";
+    public static final String ADMIN_POSTS_PAGE = ADMIN_POSTS + "/{pageNo}";
     public static final String ADMIN_POSTS_NEW = ADMIN_POSTS + "/new-post";
     public static final String ADMIN_NEW_POST = ADMIN + "/create-post";
 
@@ -26,7 +29,16 @@ public class PostController {
 
     @GetMapping(ADMIN_POSTS)
     public String posts(Model model) {
-        model.addAttribute("posts", postService.findAllPosts());
+        return allPostsPaginated(1, model);
+    }
+
+    @GetMapping(ADMIN_POSTS_PAGE)
+    public String allPostsPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+        Page<PostDto> page = postService.findPaginated(pageNo, 5);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("posts", page.getContent());
         return ADMIN_POSTS;
     }
 
