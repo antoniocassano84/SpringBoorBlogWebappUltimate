@@ -8,13 +8,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
+import java.util.List;
 
 import static net.javaguides.springboorblogwebapp.controller.PostController.ADMIN_NEW_POST;
 import static net.javaguides.springboorblogwebapp.controller.PostController.ADMIN_POSTS;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -42,8 +45,9 @@ class PostControllerTest {
 
     @Test
     void postsReturnsCorrectView() {
+        given(postService.findPaginated(anyInt(), anyInt(), anyString(), anyString()))
+                .willReturn(new PageImpl<>(List.of(PostDto.builder().build(), PostDto.builder().build())));
         String postsView = postController.posts(model);
-        verify(postService).findAllPosts();
         assertThat(postsView).isEqualTo(ADMIN_POSTS);
     }
 
