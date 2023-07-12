@@ -4,6 +4,9 @@ import net.javaguides.springboorblogwebapp.dto.PostDto;
 import net.javaguides.springboorblogwebapp.mapper.PostMapper;
 import net.javaguides.springboorblogwebapp.repository.PostRepository;
 import net.javaguides.springboorblogwebapp.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +32,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public void createPost(PostDto postDto) {
         postRepository.save(postMapper.mapToPost(postDto));
+    }
+
+    @Override
+    public Page<PostDto> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                        Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        return postRepository.findAll(PageRequest.of(pageNo, pageSize, sort)).map(postMapper::mapToPostDto);
     }
 }
