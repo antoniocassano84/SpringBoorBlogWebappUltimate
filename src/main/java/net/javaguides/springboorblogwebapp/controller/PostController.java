@@ -14,7 +14,9 @@ public class PostController {
 
     public static final String ADMIN = "/admin";
     public static final String ADMIN_POSTS = ADMIN + "/posts";
+    public static final String REDIRECT_ADMIN_POSTS = "redirect:" + ADMIN_POSTS;
     public static final String ADMIN_POST_EDIT = ADMIN_POSTS + "/{postId}/edit";
+    public static final String ADMIN_POST_DELETE = ADMIN_POSTS + "/{postId}/delete";
     public static final String ADMIN_POST_ID = ADMIN_POSTS + "/{postId}";
     public static final String ADMIN_EDIT_POST = ADMIN + "/edit-post";
     public static final String ADMIN_POSTS_PAGE = ADMIN_POSTS + "/{pageNo}";
@@ -63,7 +65,7 @@ public class PostController {
         }
         postDto.setUrl(getUrl(postDto.getTitle()));
         postService.createPost(postDto);
-        return "redirect:" + ADMIN_POSTS;
+        return REDIRECT_ADMIN_POSTS;
     }
 
     @GetMapping(ADMIN_POST_EDIT)
@@ -83,7 +85,13 @@ public class PostController {
         }
         postDto.setId(postId);
         postService.updatePost(postDto);
-        return "redirect:" + ADMIN_POSTS;
+        return REDIRECT_ADMIN_POSTS;
+    }
+
+    @GetMapping(ADMIN_POST_DELETE)
+    public String deletePost(@PathVariable("postId") Long postId) {
+        postService.deletePost(postId);
+        return REDIRECT_ADMIN_POSTS;
     }
 
     private static String getUrl(String postTitle) {

@@ -12,7 +12,7 @@ public interface PostService {
     void createPost(PostDto postDto);
     Page<PostDto> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection);
     PostDto findPostById(Long postId);
-
     void updatePost(PostDto postDto);
+    void deletePost(Long postId);
 
 }

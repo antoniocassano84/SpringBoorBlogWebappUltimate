@@ -62,7 +62,7 @@ class PostControllerTest {
         ArgumentCaptor<PostDto> postArgumentCaptor = ArgumentCaptor.forClass(PostDto.class);
         verify(postService).createPost(postArgumentCaptor.capture());
         assertThat(postArgumentCaptor.getValue()).isEqualTo(postDto);
-        assertThat(postsView).isEqualTo("redirect:" + ADMIN_POSTS);
+        assertThat(postsView).isEqualTo(REDIRECT_ADMIN_POSTS);
     }
 
     @Test
@@ -85,7 +85,7 @@ class PostControllerTest {
         ArgumentCaptor<PostDto> postArgumentCaptor = ArgumentCaptor.forClass(PostDto.class);
         verify(postService).updatePost(postArgumentCaptor.capture());
         assertThat(postArgumentCaptor.getValue()).isEqualTo(postDto);
-        assertThat(redirectView).isEqualTo("redirect:" + ADMIN_POSTS);
+        assertThat(redirectView).isEqualTo(REDIRECT_ADMIN_POSTS);
     }
 
     @Test
@@ -94,5 +94,14 @@ class PostControllerTest {
         String redirectView = postController.updatePost(1L, postDto, bindingResult, model);
         verify(postService, never()).updatePost(any());
         assertThat(redirectView).isEqualTo(ADMIN_EDIT_POST);
+    }
+
+    @Test
+    void deletePostRedirectsView() {
+        String redirectView = postController.deletePost(1L);
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postService).deletePost(longArgumentCaptor.capture());
+        assertThat(longArgumentCaptor.getValue()).isEqualTo(1L);
+        assertThat(redirectView).isEqualTo(REDIRECT_ADMIN_POSTS);
     }
 }
