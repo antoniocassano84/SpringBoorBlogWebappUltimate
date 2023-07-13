@@ -14,6 +14,9 @@ public class PostController {
 
     public static final String ADMIN = "/admin";
     public static final String ADMIN_POSTS = ADMIN + "/posts";
+    public static final String ADMIN_POST_EDIT = ADMIN_POSTS + "/{postId}/edit";
+    public static final String ADMIN_POST_ID = ADMIN_POSTS + "/{postId}";
+    public static final String ADMIN_EDIT_POST = ADMIN + "/edit-post";
     public static final String ADMIN_POSTS_PAGE = ADMIN_POSTS + "/{pageNo}";
     public static final String ADMIN_POSTS_NEW = ADMIN_POSTS + "/new-post";
     public static final String ADMIN_NEW_POST = ADMIN + "/create-post";
@@ -26,7 +29,7 @@ public class PostController {
 
     @GetMapping(ADMIN_POSTS)
     public String posts(Model model) {
-        return allPostsPaginated(1,"title", "asc", model);
+        return allPostsPaginated(0,"title", "asc", model);
     }
 
     @GetMapping(ADMIN_POSTS_PAGE)
@@ -60,6 +63,26 @@ public class PostController {
         }
         postDto.setUrl(getUrl(postDto.getTitle()));
         postService.createPost(postDto);
+        return "redirect:" + ADMIN_POSTS;
+    }
+
+    @GetMapping(ADMIN_POST_EDIT)
+    public String editPostForm(@PathVariable("postId") Long postId, Model model) {
+        model.addAttribute("post", postService.findPostById(postId));
+        return ADMIN_EDIT_POST;
+    }
+
+    @PostMapping(ADMIN_POST_ID)
+    public String updatePost(@PathVariable("postId") Long postId,
+                             @Valid @ModelAttribute("post") PostDto postDto,
+                             BindingResult bindingResult,
+                             Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("post", postDto);
+            return ADMIN_EDIT_POST;
+        }
+        postDto.setId(postId);
+        postService.updatePost(postDto);
         return "redirect:" + ADMIN_POSTS;
     }
 

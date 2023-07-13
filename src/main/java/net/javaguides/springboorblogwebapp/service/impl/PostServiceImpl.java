@@ -40,4 +40,14 @@ public class PostServiceImpl implements PostService {
                         Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         return postRepository.findAll(PageRequest.of(pageNo, pageSize, sort)).map(postMapper::mapToPostDto);
     }
+
+    @Override
+    public PostDto findPostById(Long postId) {
+        return postRepository.findById(postId).map(postMapper::mapToPostDto).orElse(null);
+    }
+
+    @Override
+    public void updatePost(PostDto postDto) {
+        postRepository.save(postMapper.mapToPost(postDto));
+    }
 }
