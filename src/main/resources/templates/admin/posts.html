@@ -38,6 +38,10 @@
                 <a class="btn btn-primary" th:href="@{${@postController.ADMIN_POST_EDIT}(postId=${post.id})}">
                     Edit
                 </a>
+                <a class="btn btn-danger"
+                   th:href="@{${@postController.ADMIN_POST_DELETE}(postId=${post.id})}">
+                    Delete
+                </a>
             </td>
         </tr>
         </tbody>
