@@ -14,8 +14,7 @@ import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
-import static net.javaguides.springboorblogwebapp.controller.PostController.ADMIN_NEW_POST;
-import static net.javaguides.springboorblogwebapp.controller.PostController.ADMIN_POSTS;
+import static net.javaguides.springboorblogwebapp.controller.PostController.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -72,5 +71,28 @@ class PostControllerTest {
         String postsView = postController.createPost(postDto, bindingResult, model);
         verify(postService, never()).createPost(any());
         assertThat(postsView).isEqualTo(ADMIN_NEW_POST);
+    }
+
+    @Test
+    void editPostFormReturnsCorrectView() {
+        String editPostView = postController.editPostForm(1L, model);
+        assertThat(editPostView).isEqualTo(ADMIN_EDIT_POST);
+    }
+
+    @Test
+    void updatePostRedirectsViewNoError() {
+        String redirectView = postController.updatePost(1L, postDto, bindingResult, model);
+        ArgumentCaptor<PostDto> postArgumentCaptor = ArgumentCaptor.forClass(PostDto.class);
+        verify(postService).updatePost(postArgumentCaptor.capture());
+        assertThat(postArgumentCaptor.getValue()).isEqualTo(postDto);
+        assertThat(redirectView).isEqualTo("redirect:" + ADMIN_POSTS);
+    }
+
+    @Test
+    void updatePostReturnsError() {
+        given(bindingResult.hasErrors()).willReturn(true);
+        String redirectView = postController.updatePost(1L, postDto, bindingResult, model);
+        verify(postService, never()).updatePost(any());
+        assertThat(redirectView).isEqualTo(ADMIN_EDIT_POST);
     }
 }

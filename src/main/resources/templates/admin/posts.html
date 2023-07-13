@@ -34,7 +34,11 @@
             <td th:text="${post.title}">Post Title 1</td>
             <td th:text="${post.shortDescription}">Post Desc 1</td>
             <td th:text="${#temporals.format(post.createdOn, 'dd MMM yyyy')}">01 Jan 2001</td>
-            <td>Actions</td>
+            <td>
+                <a class="btn btn-primary" th:href="@{${@postController.ADMIN_POST_EDIT}(postId=${post.id})}">
+                    Edit
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

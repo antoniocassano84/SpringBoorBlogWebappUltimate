@@ -78,4 +78,21 @@ class PostServiceImplTest {
         assertThat(pageableArgumentCaptor.getValue())
                 .isEqualTo(PageRequest.of(1, 5, Sort.by("title").ascending()));
     }
+
+    @Test
+    void canFindPostById() {
+        postService.findPostById(1L);
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postRepository).findById(longArgumentCaptor.capture());
+        assertThat(longArgumentCaptor.getValue()).isEqualTo(1L);
+    }
+
+    @Test
+    void canUpdatePost() {
+        postService.updatePost(postDto);
+        ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
+        verify(postRepository).save(postArgumentCaptor.capture());
+        assertThat(postArgumentCaptor.getValue()).isEqualTo(postMapper.mapToPost(postDto));
+    }
+
 }
