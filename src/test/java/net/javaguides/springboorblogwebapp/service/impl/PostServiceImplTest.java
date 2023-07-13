@@ -95,4 +95,12 @@ class PostServiceImplTest {
         assertThat(postArgumentCaptor.getValue()).isEqualTo(postMapper.mapToPost(postDto));
     }
 
+    @Test
+    void canDeletePost() {
+        postService.deletePost(1L);
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(postRepository).deleteById(longArgumentCaptor.capture());
+        assertThat(longArgumentCaptor.getValue()).isEqualTo(1L);
+    }
+
 }
