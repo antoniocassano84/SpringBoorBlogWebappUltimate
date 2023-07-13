@@ -104,4 +104,13 @@ class PostControllerTest {
         assertThat(longArgumentCaptor.getValue()).isEqualTo(1L);
         assertThat(redirectView).isEqualTo(REDIRECT_ADMIN_POSTS);
     }
+
+    @Test
+    void viewPostReturnsCorrectView() {
+        String returnedView = postController.viewPost("url", model);
+        ArgumentCaptor<String> strArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(postService).findPostByUrl(strArgumentCaptor.capture());
+        assertThat(strArgumentCaptor.getValue()).isEqualTo("url");
+        assertThat(returnedView).isEqualTo(VIEW_POST);
+    }
 }

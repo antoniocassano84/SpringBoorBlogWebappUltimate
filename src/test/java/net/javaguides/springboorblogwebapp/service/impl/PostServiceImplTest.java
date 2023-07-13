@@ -88,6 +88,14 @@ class PostServiceImplTest {
     }
 
     @Test
+    void canFindPostByUrl() {
+        postService.findPostByUrl("url");
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(postRepository).findByUrl(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo("url");
+    }
+
+    @Test
     void canUpdatePost() {
         postService.updatePost(postDto);
         ArgumentCaptor<Post> postArgumentCaptor = ArgumentCaptor.forClass(Post.class);
