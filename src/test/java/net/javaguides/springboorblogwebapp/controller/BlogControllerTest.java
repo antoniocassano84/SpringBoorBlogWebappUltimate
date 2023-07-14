@@ -1,6 +1,5 @@
 package net.javaguides.springboorblogwebapp.controller;
 
-import net.javaguides.springboorblogwebapp.dto.PostDto;
 import net.javaguides.springboorblogwebapp.service.PostService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
