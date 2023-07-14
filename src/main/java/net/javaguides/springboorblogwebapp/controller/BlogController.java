@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BlogController {
 
     public static final String BLOG_VIEW_POSTS = "blog/view-posts";
+    public static final String BLOG_POST = "blog/blog-post";
     public static final String PAGE_SEARCH = "/page/search";
     public static final String POST_URL = "/post/{postUrl}";
 
@@ -24,12 +25,12 @@ public class BlogController {
         return BLOG_VIEW_POSTS;
     }
 
-//    @GetMapping(POST_URL)
-//    public String showPost(@PathVariable Variable("postUrl") String postUrl, Model model) {
-//        model.addAttribute("comment", new CommentDto());
-//        model.addAttribute("post", postService.findPostByUrl(postUrl));
-//        return BLOG_POST;
-//    }
+    @GetMapping(POST_URL)
+    public String showPost(@PathVariable("postUrl") String postUrl, Model model) {
+        //model.addAttribute("comment", new CommentDto());
+        model.addAttribute("post", postService.findPostByUrl(postUrl));
+        return BLOG_POST;
+    }
 
     @GetMapping(PAGE_SEARCH)
     public String searchPosts(@RequestParam(name = "query") String query, Model model) {
