@@ -111,4 +111,12 @@ class PostServiceImplTest {
         assertThat(longArgumentCaptor.getValue()).isEqualTo(1L);
     }
 
+    @Test
+    void canSearchPostByTitle() {
+        postService.searchPosts("title");
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(postRepository).searchPosts(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue()).isEqualTo("title");
+    }
+
 }

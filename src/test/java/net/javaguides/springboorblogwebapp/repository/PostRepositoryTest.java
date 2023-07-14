@@ -23,7 +23,13 @@ class PostRepositoryTest {
         postRepository.saveAllAndFlush(List.of(
                 Post.builder().title("test").content("test content").url("url test 1").build(),
                 Post.builder().title("test").content("test content").url("url test 2").build(),
-                Post.builder().title("test").content("test content").url("url test 3").build()
+                Post.builder().title("test").content("test content").url("url test 3").build(),
+                Post.builder().title("test1").content("test content").url("url test 1").build(),
+                Post.builder().title("test1").content("test content").url("url test 2").build(),
+                Post.builder().title("test1").content("test content").url("url test 3").build(),
+                Post.builder().title("test2").content("test content").url("url test 11").build(),
+                Post.builder().title("test2").content("test content").url("url test 2").build(),
+                Post.builder().title("test2").content("test content").url("url test 3").build()
                 )
         );
     }
@@ -36,7 +42,7 @@ class PostRepositoryTest {
     @Test
     void itShouldFindExistingPostByUrl() {
         // when
-        Optional<Post> postByUrl = postRepository.findByUrl("url test 1");
+        Optional<Post> postByUrl = postRepository.findByUrl("url test 11");
         // then
         assertThat(postByUrl).isPresent();
     }
@@ -47,5 +53,13 @@ class PostRepositoryTest {
         Optional<Post> postByUrl = postRepository.findByUrl("test");
         // then
         assertThat(postByUrl).isNotPresent();
+    }
+
+    @Test
+    void canSearchPostByTitle() {
+        // when
+        List<Post> postByTitle = postRepository.searchPosts("test1");
+        // then
+        assertThat(postByTitle.size()).isEqualTo(3);
     }
 }

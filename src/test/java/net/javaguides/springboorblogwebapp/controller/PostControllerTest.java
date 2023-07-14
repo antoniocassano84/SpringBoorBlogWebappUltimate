@@ -113,4 +113,13 @@ class PostControllerTest {
         assertThat(strArgumentCaptor.getValue()).isEqualTo("url");
         assertThat(returnedView).isEqualTo(VIEW_POST);
     }
+
+    @Test
+    void searchPostReturnsCorrectView() {
+        String searchPostView = postController.searchPosts("query", model);
+        ArgumentCaptor<String> strArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(postService).searchPosts(strArgumentCaptor.capture());
+        assertThat(strArgumentCaptor.getValue()).isEqualTo("query");
+        assertThat(searchPostView).isEqualTo(ADMIN_POSTS);
+    }
 }
