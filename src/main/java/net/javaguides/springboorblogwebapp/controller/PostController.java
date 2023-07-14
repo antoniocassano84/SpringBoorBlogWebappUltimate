@@ -15,6 +15,7 @@ public class PostController {
     public static final String ADMIN = "/admin";
     public static final String ADMIN_POSTS = ADMIN + "/posts";
     public static final String REDIRECT_ADMIN_POSTS = "redirect:" + ADMIN_POSTS;
+    public static final String ADMIN_POSTS_SEARCH = "/admin/posts/search";
     public static final String ADMIN_POST_EDIT = ADMIN_POSTS + "/{postId}/edit";
     public static final String ADMIN_POST_DELETE = ADMIN_POSTS + "/{postId}/delete";
     public static final String ADMIN_POST_ID = ADMIN_POSTS + "/{postId}";
@@ -100,6 +101,12 @@ public class PostController {
     public String viewPost(@PathVariable("postUrl") String postUrl, Model model) {
         model.addAttribute("post", postService.findPostByUrl(postUrl));
         return VIEW_POST;
+    }
+
+    @GetMapping(ADMIN_POSTS_SEARCH)
+    public String searchPosts(@RequestParam(value="query") String query, Model model) {
+        model.addAttribute("posts", postService.searchPosts(query));
+        return ADMIN_POSTS;
     }
 
     private static String getUrl(String postTitle) {
