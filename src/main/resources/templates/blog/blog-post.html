@@ -15,11 +15,12 @@
       <hr/>
       <div>
         <h3>Comments:</h3>
+        <hr/>
         <div th:each="comment : ${post.comments}">
           <div>
-            <p><b>Name:</b><strong th:text="${comment.name}">Name</strong></p>
-            <p><b>Date:</b>
-              <strong th:text="${#temporals.format(comment.createdOn, 'dd MMM yyyy')}">
+            <p><b>Name: </b><strong th:text="${comment.name}">Name</strong></p>
+            <p><b>Date: </b>
+              <strong th:text="${#temporals.format(comment.createdOn, 'dd-MMM-yyyy @ HH:mm a')}">
                 Name
               </strong>
             </p>
