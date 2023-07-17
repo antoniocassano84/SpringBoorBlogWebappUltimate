@@ -61,6 +61,21 @@ class PostControllerTest {
     }
 
     @Test
+    void postCommentsReturnsCorrectView() {
+        String postCommentsView = postController.postComments(model);
+        assertThat(postCommentsView).isEqualTo(ADMIN_COMMENTS);
+    }
+
+    @Test
+    void deleteCommentsReturnsCorrectView() {
+        String deleteCommentsView = postController.deleteComment(1L);
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(commentService).deleteComment(longArgumentCaptor.capture());
+        assertThat(longArgumentCaptor.getValue()).isEqualTo(1L);
+        assertThat(deleteCommentsView).isEqualTo(REDIRECT_ADMIN_POSTS_COMMENTS);
+    }
+
+    @Test
     void createPostsRedirectsToPostsAfterSuccessfullyAddedNewPost() {
         String postsView = postController.createPost(postDto, bindingResult, model);
         ArgumentCaptor<PostDto> postArgumentCaptor = ArgumentCaptor.forClass(PostDto.class);
