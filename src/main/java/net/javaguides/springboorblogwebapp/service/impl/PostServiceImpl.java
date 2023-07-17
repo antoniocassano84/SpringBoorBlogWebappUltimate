@@ -35,6 +35,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public Page<PostDto> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                         Sort.by(sortField).ascending() : Sort.by(sortField).descending();

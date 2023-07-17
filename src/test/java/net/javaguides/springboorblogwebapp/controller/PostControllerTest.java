@@ -1,6 +1,7 @@
 package net.javaguides.springboorblogwebapp.controller;
 
 import net.javaguides.springboorblogwebapp.dto.PostDto;
+import net.javaguides.springboorblogwebapp.service.CommentService;
 import net.javaguides.springboorblogwebapp.service.PostService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,9 @@ class PostControllerTest {
     private PostService postService;
 
     @Mock
+    private CommentService commentService;
+
+    @Mock
     private Model model;
 
     @Mock
@@ -38,7 +42,7 @@ class PostControllerTest {
 
     @BeforeEach
     void setUp() {
-        postController = new PostController(postService);
+        postController = new PostController(postService, commentService);
         postDto = PostDto.builder().title("test").content("test").build();
     }
 

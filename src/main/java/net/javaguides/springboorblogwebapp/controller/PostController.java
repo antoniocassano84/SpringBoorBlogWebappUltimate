@@ -2,6 +2,7 @@ package net.javaguides.springboorblogwebapp.controller;
 
 import jakarta.validation.Valid;
 import net.javaguides.springboorblogwebapp.dto.PostDto;
+import net.javaguides.springboorblogwebapp.service.CommentService;
 import net.javaguides.springboorblogwebapp.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,17 @@ public class PostController {
     public static final String ADMIN_POSTS_NEW = ADMIN_POSTS + "/new-post";
     public static final String ADMIN_NEW_POST = ADMIN + "/create-post";
     public static final String VIEW_POST = ADMIN + "/view-post";
+    public static final String ADMIN_POSTS_COMMENTS = ADMIN_POSTS + "/comments";
+    public static final String REDIRECT_ADMIN_POSTS_COMMENTS = "redirect:" + ADMIN_POSTS_COMMENTS;
+    public static final String ADMIN_DELETE_COMMENTS = ADMIN_POSTS_COMMENTS + "/{commentId}";
+    public static final String ADMIN_COMMENTS = "admin/comments";
 
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping(ADMIN_POSTS)
@@ -107,6 +114,18 @@ public class PostController {
     public String searchPosts(@RequestParam(value="query") String query, Model model) {
         model.addAttribute("posts", postService.searchPosts(query));
         return ADMIN_POSTS;
+    }
+
+    @GetMapping(ADMIN_POSTS_COMMENTS)
+    public String postComments(Model model) {
+        model.addAttribute("comments", commentService.findALlComments());
+        return ADMIN_COMMENTS;
+    }
+
+    @GetMapping(ADMIN_DELETE_COMMENTS)
+    public String deleteComment(@PathVariable("commentId") Long commentId) {
+        commentService.deleteComment(commentId);
+        return REDIRECT_ADMIN_POSTS_COMMENTS;
     }
 
     private static String getUrl(String postTitle) {
