@@ -29,7 +29,7 @@ public class CommentController {
         if(bindingResult.hasErrors()) {
             model.addAttribute("comment", commentDto);
             model.addAttribute("post", postService.findPostByUrl(postUrl));
-            return "blog/blog_post";
+            return "blog/blog-post";
         }
         commentService.createComment(postUrl, commentDto);
         return "redirect:/post/" + postUrl;
