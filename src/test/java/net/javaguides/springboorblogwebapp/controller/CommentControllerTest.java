@@ -59,6 +59,6 @@ class CommentControllerTest {
         given(bindingResult.hasErrors()).willReturn(true);
         String view = commentController.createComment(commentDto, bindingResult, model, "url");
         verify(commentService, never()).createComment(anyString(), any(CommentDto.class));
-        assertThat(view).isEqualTo("blog/blog_post");
+        assertThat(view).isEqualTo("blog/blog-post");
     }
 }
